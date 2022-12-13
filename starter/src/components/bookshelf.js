@@ -14,7 +14,7 @@ export function BookShelf(prop) {
                     shelf={book.shelf}
                     bookId={book.id}
                     title={book.title}
-                    author={book.author}
+                    authors={book.authors}
                     backgroundImage={book.imageLinks.smallThumbnail}
                     updateState={prop.updateState}
                   />

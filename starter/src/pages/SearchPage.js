@@ -86,7 +86,7 @@ export function SearchPage() {
                   shelf={null}
                   bookId={book.id}
                   title={book.title}
-                  author={book.author}
+                  author={book.authors}
                   backgroundImage={book?.imageLinks?.smallThumbnail}
                   updateState={handleUpdate}
                 />

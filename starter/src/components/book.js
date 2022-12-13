@@ -1,7 +1,7 @@
 import { ShelfChanger } from '.'
 
 /**
- * @param {{ bookId: string, backgroundImage: string, title: string, author: string }} prop
+ * @param {{ bookId: string, backgroundImage: string, title: string, authors: string }} prop
  */
 export function Book(prop) {
   return (
@@ -23,7 +23,9 @@ export function Book(prop) {
         />
       </div>
       <div className="book-title">{prop.title}</div>
-      <div className="book-authors">{prop.author}</div>
+      <div className="book-authors">
+        {prop.authors ? prop.authors.toString() : 'Unknown'}
+      </div>
     </div>
   )
 }
