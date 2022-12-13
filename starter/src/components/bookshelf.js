@@ -1,4 +1,4 @@
-import { Book } from '.';
+import { Book } from '.'
 
 export function BookShelf(prop) {
   return (
@@ -7,10 +7,11 @@ export function BookShelf(prop) {
       <div className="bookshelf-books">
         <ol className="books-grid">
           {prop.books &&
-            prop.books.map((book) => {
+            prop.books.map(book => {
               return (
                 <li key={book.id}>
                   <Book
+                    shelf={book.shelf}
                     bookId={book.id}
                     title={book.title}
                     author={book.author}
@@ -18,10 +19,10 @@ export function BookShelf(prop) {
                     updateState={prop.updateState}
                   />
                 </li>
-              );
+              )
             })}
         </ol>
       </div>
     </div>
-  );
+  )
 }

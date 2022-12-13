@@ -1,29 +1,39 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import { getAll } from './BooksAPI';
-import { BookShelf } from './components';
+import { useEffect, useState } from 'react'
+import './Homepage.css'
+import { getAll } from '../BooksAPI'
+import { BookShelf } from '../components'
+import { Link } from 'react-router-dom'
 
-function App() {
-  const [books, setBooks] = useState(false);
+/**
+ * @description Main Portion of the website.
+ * @return {React.JSXElement}
+ */
+export function Homepage() {
+  const [books, setBooks] = useState([])
 
   useEffect(() => {
+    setBooks(getBooks())
+  }, [])
+
+  /**
+   * @description Cache books in localStorage.
+   * @returns {Array<book>}
+   */
+  function getBooks() {
     getAll()
-      .then((Books) => {
-        setBooks(Books);
+      .then(Books => {
+        console.log('Api Request sent')
+        setBooks(Books)
       })
-      .catch((err) => console.log(err));
-  }, []);
+      .catch(err => console.log(err))
+  }
 
   // Clojure to update state, sent to child comp.
   const updateState = function () {
     return function () {
-      getAll()
-        .then((Books) => {
-          setBooks(Books);
-        })
-        .catch((err) => console.log(err));
-    };
-  };
+      getBooks()
+    }
+  }
 
   return (
     <div className="app">
@@ -37,7 +47,7 @@ function App() {
               {books && (
                 <BookShelf
                   books={books.filter(
-                    (book) => book.shelf === 'currentlyReading'
+                    book => book.shelf === 'currentlyReading'
                   )}
                   title="Currently Reading"
                   updateState={updateState()}
@@ -47,7 +57,7 @@ function App() {
             <div>
               {books && (
                 <BookShelf
-                  books={books.filter((book) => book.shelf === 'wantToRead')}
+                  books={books.filter(book => book.shelf === 'wantToRead')}
                   title="Want To Read"
                   updateState={updateState()}
                 />
@@ -56,7 +66,7 @@ function App() {
             <div>
               {books && (
                 <BookShelf
-                  books={books.filter((book) => book.shelf === 'read')}
+                  books={books.filter(book => book.shelf === 'read')}
                   title="Read"
                   updateState={updateState()}
                 />
@@ -65,11 +75,13 @@ function App() {
           </div>
         </div>
         <div className="open-search">
-          <a href="/search">Add a book</a>
+          <Link to="/search" state={{ updateState: updateState() }}>
+            Add a book
+          </Link>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default Homepage

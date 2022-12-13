@@ -1,4 +1,4 @@
-import { ShelfChanger } from '.';
+import { ShelfChanger } from '.'
 
 /**
  * @param {{ bookId: string, backgroundImage: string, title: string, author: string }} prop
@@ -16,10 +16,14 @@ export function Book(prop) {
           }}
         ></div>
 
-        <ShelfChanger bookId={prop.bookId} updateState={prop.updateState} />
+        <ShelfChanger
+          shelf={prop.shelf}
+          bookId={prop.bookId}
+          updateState={prop.updateState}
+        />
       </div>
       <div className="book-title">{prop.title}</div>
       <div className="book-authors">{prop.author}</div>
     </div>
-  );
+  )
 }
