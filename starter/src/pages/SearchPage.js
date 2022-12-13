@@ -27,7 +27,7 @@ export function SearchPage() {
     timeout = setTimeout(() => {
       search(e.target.value, 5)
         .then(res => {
-          if (res.error) return handleError(res.error)
+          if (res?.error) return handleError(res.error)
           // Reset error if exists.
           setError('')
           // Set the results
