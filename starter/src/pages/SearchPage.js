@@ -9,34 +9,35 @@ import './Homepage'
  * @return {React.JSXElement}
  */
 export function SearchPage() {
-  let timeout
+  const timeout = useRef(null)
   const [searchResult, setSearchResults] = useState([])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const textRef = useRef(null)
 
   useEffect(() => {
-    return () => clearTimeout(timeout) // Cleanup
+    return () => clearTimeout(timeout.current) // Cleanup
   }, [])
 
   const handleInput = e => {
     // A basic implemntation of debounce.
     setLoading(true) // tell user we are loading
     setError('') // Clear the error.
-    clearTimeout(timeout) // Cancel previous ones.
-    timeout = setTimeout(() => {
-      search(e.target.value, 5)
-        .then(res => {
-          if (res?.error) return handleError(res.error)
-          // Reset error if exists.
-          setError('')
-          // Set the results
-          return setSearchResults(res)
-        })
-        .catch(err => {
-          console.log(err)
-          return setSearchResults([])
-        })
+    clearTimeout(timeout.current) // Cancel previous ones.
+    timeout.current = setTimeout(() => {
+      if (e.target.value != '')
+        search(e.target.value, 5)
+          .then(res => {
+            if (res?.error) return handleError(res.error)
+            // Reset error if exists.
+            setError('')
+            // Set the results
+            return setSearchResults(res)
+          })
+          .catch(err => {
+            console.log(err)
+            return setSearchResults([])
+          })
       setLoading(false)
     }, 500)
   }
