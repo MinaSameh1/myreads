@@ -2,24 +2,24 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { search } from '../BooksAPI'
 import { Book } from '../components'
+import { httpError } from '../utils/httpError'
 import './Homepage'
 
 /**
  * @description Page that is Responsible for searching.
- * @return {React.JSXElement}
  */
 export function SearchPage() {
-  const timeout = useRef(null)
-  const [searchResult, setSearchResults] = useState([])
+  const timeout = useRef<ReturnType<typeof setTimeout>>()
+  const [searchResult, setSearchResults] = useState<Array<Backend.Book>>([])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const textRef = useRef(null)
+  const textRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
     return () => clearTimeout(timeout.current) // Cleanup
   }, [])
 
-  const handleInput = e => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     // A basic implemntation of debounce.
     setLoading(true) // tell user we are loading
     setError('') // Clear the error.
@@ -28,13 +28,14 @@ export function SearchPage() {
       if (e.target.value != '')
         search(e.target.value, 5)
           .then(res => {
-            if (res?.error) return handleError(res.error)
             // Reset error if exists.
             setError('')
             // Set the results
-            return setSearchResults(res)
+            return setSearchResults(res as Array<Backend.Book>)
           })
-          .catch(err => {
+          .catch(async err => {
+            if (err instanceof httpError)
+              return handleError(await err.getMessage())
             console.log(err)
             return setSearchResults([])
           })
@@ -44,13 +45,14 @@ export function SearchPage() {
 
   const handleUpdate = () => {
     // Reset everything.
-    textRef.current.value = ''
+    if (textRef.current?.value) textRef.current.value = ''
     setSearchResults([])
     setLoading(false)
     setError('')
   }
 
-  const handleError = err => {
+  const handleError = (err: string) => {
+    console.log(err)
     // clean the shelf
     setSearchResults([])
     switch (err) {
@@ -87,7 +89,7 @@ export function SearchPage() {
                   shelf={null}
                   bookId={book.id}
                   title={book.title}
-                  author={book.authors}
+                  authors={book.authors}
                   backgroundImage={book?.imageLinks?.smallThumbnail}
                   updateState={handleUpdate}
                 />

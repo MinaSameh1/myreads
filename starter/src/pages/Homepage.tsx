@@ -6,23 +6,20 @@ import { Link } from 'react-router-dom'
 
 /**
  * @description Main Portion of the website.
- * @return {React.JSXElement}
  */
-export function Homepage() {
-  const [books, setBooks] = useState([])
+export function Homepage(): JSX.Element {
+  const [books, setBooks] = useState<Array<Backend.Book>>([])
 
   useEffect(() => {
-    setBooks(getBooks())
+    getBooks()
   }, [])
 
   /**
-   * @description Cache books in localStorage.
-   * @returns {Array<book>}
+   * @description Gets books from api.
    */
   function getBooks() {
     getAll()
       .then(Books => {
-        console.log('Api Request sent')
         setBooks(Books)
       })
       .catch(err => console.log(err))

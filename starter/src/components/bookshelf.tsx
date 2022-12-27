@@ -1,6 +1,12 @@
 import { Book } from '.'
 
-export function BookShelf(prop) {
+interface Props {
+  books: Array<Backend.Book>
+  title: string
+  updateState: () => unknown
+}
+
+export function BookShelf(prop: Props) {
   return (
     <div className="bookshelf">
       <h2 className="bookshelf-title">{prop.title}</h2>

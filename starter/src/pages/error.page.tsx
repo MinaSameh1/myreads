@@ -3,7 +3,7 @@
 import { useRouteError } from 'react-router-dom'
 
 export function ErrorPage() {
-  const error = useRouteError()
+  const error = useRouteError() as { statusText: string; message: string }
   console.error(error)
 
   return (
@@ -18,7 +18,7 @@ export function ErrorPage() {
       <p>
         <i>
           <br />
-          {error.statusText || error.message}
+          {error?.statusText || error?.message}
         </i>
       </p>
     </div>

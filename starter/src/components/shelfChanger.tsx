@@ -3,21 +3,24 @@ import { get, update } from '../BooksAPI'
 
 /**
  * @description Responisble for handling state changes.
- * @param {{ bookId: string; }} prop
  */
-export function ShelfChanger(prop) {
+export function ShelfChanger(prop: {
+  bookId: string
+  shelf: string | null
+  updateState: () => void
+}) {
   const [shelf, setShelf] = useState('default')
 
   useEffect(() => {
     // This is done because the search API doesnt return a shelf...!!!!
     if (!prop.shelf) {
-      return get(prop.bookId)
+      get(prop.bookId)
         .then(res => {
-          setShelf(res.shelf)
+          return setShelf(res.shelf)
         })
         .catch(err => console.log(err))
     }
-    setShelf(prop.shelf)
+    return setShelf(prop.shelf ?? 'none')
   }, [])
 
   return (
@@ -26,7 +29,7 @@ export function ShelfChanger(prop) {
         value={shelf}
         onChange={e =>
           handleBookState(
-            { bookId: prop.bookId, state: e.target.value },
+            { bookId: prop.bookId, state: e.target.value as Backend.Shelf },
             prop.updateState
           )
         }
@@ -46,7 +49,13 @@ export function ShelfChanger(prop) {
 /**
  * @param {{ bookId: string, state: "currentlyReading" | "wantToRead" | "read" | "none"}} item
  */
-function handleBookState(item, updateState) {
+function handleBookState(
+  item: {
+    bookId: string
+    state: Backend.Shelf
+  },
+  updateState: () => void
+) {
   update(item.bookId, item.state)
     .then(() => {
       updateState()

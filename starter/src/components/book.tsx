@@ -1,9 +1,13 @@
 import { ShelfChanger } from '.'
 
-/**
- * @param {{ bookId: string, backgroundImage: string, title: string, authors: string }} prop
- */
-export function Book(prop) {
+interface Props extends Pick<Backend.Book, 'authors' | 'title'> {
+  updateState: () => void
+  bookId: Backend.Book['id']
+  backgroundImage: string
+  shelf: Backend.Shelf | null
+}
+
+export function Book(prop: Props) {
   return (
     <div className="book">
       <div className="book-top">
