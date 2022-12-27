@@ -72,9 +72,7 @@ export function Homepage(): JSX.Element {
           </div>
         </div>
         <div className="open-search">
-          <Link to="/search" state={{ updateState: updateState() }}>
-            Add a book
-          </Link>
+          <Link to="/search">Add a book</Link>
         </div>
       </div>
     </div>
