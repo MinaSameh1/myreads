@@ -10,3 +10,11 @@ npm start # Will open browser on localhost:3000
 ```
 
 The project was built using types and tsserver to help durning dev.
+
+I migrated it from js to tsx as well, (After passing) I added some error handling to try out a new techinque.
+
+Here is project run.
+
+## Run
+
+![Run GIF](https://github.com/MinaSameh1/myreads/blob/main/starter/docs/books.gif)
