@@ -1,0 +1,32 @@
+name: Deploy React to github pages
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js 16
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Install Deps
+      run: cd starter && npm install
+
+    - name: build
+      run: cd starter && npm run build
+
+    - name: Deploy pages
+      uses: crazy-max/ghaction-github-pages@v2
+      with:
+        build_dir: ./starter/build
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
